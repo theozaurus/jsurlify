@@ -1,0 +1,164 @@
+Description
+===========
+
+This is a small library designed to make dealing with URLs in Javascript easier.
+
+Examples
+========
+
+    var url = new JSUrlify('https://foo.com/hello?one=1&two=2#bar')
+    url.scheme()
+    -> "https"
+    
+    url.scheme("http")
+    -> "http"
+    
+    url.toString()
+    -> "http://foo.com/hello?one=hello+%26+goodbye&two=2#bar"
+    
+    url.authority()
+    -> "foo.com"
+    
+    url.path()
+    -> "/hello"
+    
+    url.attribute_names()
+    -> ["one", "two"]
+    
+    url.one
+    -> "1"
+    
+    url['one']
+    -> "1"
+    
+    url.two
+    -> "2"
+    
+    url['two']
+    -> "2"
+    
+    url.fragment
+    -> "bar"
+    
+    url.one = "hello & goodbye"
+    -> "hello & goodbye"
+    
+    url.toString()
+    -> "http://foo.com/hello?one=hello+%26+goodbye&two=2#bar"
+    
+    url['three'] = 3
+    -> 3
+    
+    url.toString()
+    -> "http://foo.com/hello?one=hello+%26+goodbye&two=2&three=3#bar"
+    
+    url.prepend("zero",0)
+    
+    url.toString()
+    -> new 
+    
+    url.remove("three")
+    -> "3"
+    
+    url.toString()
+    -> "http://foo.com/hello?one=hello+%26+goodbye&two=2#bar"
+    
+    url.append("z","zee")
+
+    url.toString()
+    -> "http://foo.com/hello?one=hello+%26+goodbye&two=2&z=zee#bar"
+    
+    url.query({abc: 123, fraggle: "rock"})
+    
+    url.toString()
+    -> "http://foo.com/hello?abc=123&fraggle=rock#bar"
+    
+    url.query("a=b&c=d")
+    
+    url.toString()
+    -> "http://foo.com?a=b&c=d#bar"
+    
+    url.clear_fragment()
+    
+    url.toString()
+    -> "http://foo.com/hello?a=b&c=d"
+    
+    url.clear_query()
+    
+    url.toString()
+    -> "http://foo.com/hello"
+    
+    url.clear_scheme()
+
+    url.toString()
+    -> "/hello"
+    
+    url.scheme("http")
+    
+    url.toString()
+    -> "http://foo.com/hello"
+    
+    url.clear_path()
+    -> "http://foo.com"
+    
+    url.go()
+    // Changes browser location
+    
+
+Supported Browsers
+==================
+
+Currently the test suite is run against:
+
+- Firefox 3.0
+- Firefox 3.6
+- Google Chrome
+- Safari 4
+- Opera 9
+- Opera 10
+
+At the moment Internet Explorer is not supported.
+
+Testing
+=======
+
+Testing is done using [Jasmine](http://pivotal.github.com/jasmine/), with Ruby used to help automate things.
+
+Setup
+-----
+
+- Install [Ruby](http://www.ruby-lang.org/en/)
+- Install [Bundler](http://gembundler.com/)
+
+        $ gem install bundler
+
+- Install Gems with Bundler
+
+        $ cd jsurlify
+        $ bundle install
+
+Running locally
+---------------
+
+To run the tests on a browser that is local to your machine
+
+      $ cd jsurlify
+      $ rake jasmine
+   
+Then open your local browser to [http://localhost:8888](http://localhost:8888)
+
+Running at Saucelabs
+--------------------
+
+You will need an account at [Saucelabs](http://saucelabs.com/) then run:
+
+    $ cd jsurlify
+    $ SAUCELABS_USERNAME=<YOUR USERNAME> SAUCELABS_ACCESS_KEY=<YOUR ACCESS KEY> rake jasmine:ci
+   
+or to run against a specific browser
+
+    $ SAUCELABS_USERNAME=<YOUR USERNAME> SAUCELABS_ACCESS_KEY=<YOUR ACCESS KEY> rake jasmine:firefox_3_0
+   
+to get a list of possible browsers
+
+    $ rake jasmine -T
