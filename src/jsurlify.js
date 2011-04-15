@@ -1,5 +1,44 @@
 var JSUrlify = function(u) {
   
+  // Private methods.
+  var valid_arguments = function(args){
+    // Accept only undefined, or non empty strings
+    return args.length == 1 && ( typeof args[0] === 'undefined' || args[0].length > 0 );
+  };
+  
+  var array_filter = function(array, fun /*, thisp */){
+    // IE doesn't support filter method
+    var len = array.length >>> 0;
+    if (typeof fun != "function"){
+      throw new TypeError();
+    }
+
+    var res = [];
+    var thisp = arguments[2];
+    for (var i = 0; i < len; i++)
+    {
+      if (i in array)
+      {
+        var val = array[i]; // in case fun mutates this
+        if (fun.call(thisp, val, i, array)){
+          res.push(val);
+        }
+      }
+    }
+
+    return res;
+  };
+  
+  var array_index_of = function(array, obj, start){
+    // IE doesn't support indexOf method
+    for (var i = (start || 0); i < array.length; i++) {
+      if (array[i] == obj) {
+        return i;
+      }
+    }
+    return -1;
+  };
+  
   // Privileged methods.
   this.attribute_names = function(){
     var all_names = [];
@@ -13,10 +52,10 @@ var JSUrlify = function(u) {
     
     // Remove any out of date properties
     var that = this;
-    attribute_names = attribute_names.filter(function(n){ return that.hasOwnProperty( n ); });
-    
+    attribute_names = array_filter(attribute_names, function(n){ return that.hasOwnProperty( n ); });
+        
     // Compare with original order to get new attributes
-    new_names = all_names.filter(function(i){ return attribute_names.indexOf(i) < 0; });
+    new_names = array_filter(all_names, function(n){ return array_index_of( attribute_names, n ) < 0; });
     
     // Return original names and new names
     return attribute_names.concat(new_names);
@@ -29,17 +68,17 @@ var JSUrlify = function(u) {
   };
   
   this.scheme = function(){
-    if( arguments.length == 1 ){ scheme = arguments[0]; }
+    if( valid_arguments(arguments) ){ scheme = arguments[0]; }
     return scheme;
   };
   
   this.authority = function(){
-    if( arguments.length == 1 ){ authority = arguments[0]; }
+    if( valid_arguments(arguments) ){ authority = arguments[0]; }
     return authority;
   };
   
   this.path = function(){
-    if( arguments.length == 1 ){ path = arguments[0]; }
+    if( valid_arguments(arguments) ){ path = arguments[0]; }
     return path;
   };
   
@@ -48,7 +87,7 @@ var JSUrlify = function(u) {
       case 'string':
         this.clear_query();
         attribute_names = [];
-        if(query.indexOf('=') > 0){
+        if( array_index_of( query,'=' ) > 0){
           var query_array = query.split("&");        
           for (var i in query_array){
             var a = query_array[i].split("=");
@@ -71,7 +110,7 @@ var JSUrlify = function(u) {
   };
   
   this.fragment = function(){
-    if( arguments.length == 1 ){ fragment = arguments[0]; }
+    if( valid_arguments(arguments) ){ fragment = arguments[0]; }
     return fragment;
   };
 
@@ -97,7 +136,7 @@ JSUrlify.prototype.toString = function(){
   // Add path if available
   if( typeof(this.path()) == 'string' ){ url.push(this.path()); }
   // Add query parameters, maintaining original order if available
-  var names  = this.attribute_names();
+  var names = this.attribute_names();
   if( names.length > 0 ){ 
     var params = [];
     for (var i in names){

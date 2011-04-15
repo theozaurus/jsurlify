@@ -119,8 +119,9 @@ Currently the test suite is run against:
 - Safari 4
 - Opera 9
 - Opera 10
+- IE 8
 
-At the moment Internet Explorer is not supported.
+Currently Internet Explorer 6 and 7 are not supported. IE9 should work fine, but has not been built into the automated testing.
 
 Testing
 =======
