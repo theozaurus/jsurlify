@@ -153,12 +153,5 @@ Running at Saucelabs
 You will need an account at [Saucelabs](http://saucelabs.com/) then run:
 
     $ cd jsurlify
-    $ SAUCELABS_USERNAME=<YOUR USERNAME> SAUCELABS_ACCESS_KEY=<YOUR ACCESS KEY> rake jasmine:ci
-   
-or to run against a specific browser
+    $ SAUCE_USERNAME=<YOUR USERNAME> SAUCE_ACCESS_KEY=<YOUR ACCESS KEY> rake jasmine:ci:sauce
 
-    $ SAUCELABS_USERNAME=<YOUR USERNAME> SAUCELABS_ACCESS_KEY=<YOUR ACCESS KEY> rake jasmine:firefox_3_0
-   
-to get a list of possible browsers
-
-    $ rake jasmine -T
