@@ -110,9 +110,12 @@ Supported Browsers
 
 Currently the test suite is run against:
 
+- Firefox 2.0
 - Firefox 3.0
+- Firefox 3.5
 - Firefox 3.6
 - Google Chrome
+- Safari 3
 - Safari 4
 - Opera 9
 - Opera 10
