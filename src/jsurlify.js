@@ -90,9 +90,11 @@ var JSUrlify = function(u) {
         if( array_index_of( query,'=' ) > 0){
           var query_array = query.split("&");        
           for (var i in query_array){
-            var a = query_array[i].split("=");
-            attribute_names.push( a[0] );
-            this[a[0]] = decodeURIComponent(a[1].replace(/\+/g,' '));
+            if( query_array.hasOwnProperty(i) ){
+              var a = query_array[i].split("=");
+              attribute_names.push( a[0] );
+              this[a[0]] = decodeURIComponent(a[1].replace(/\+/g,' '));
+            }
           }
         }
         break;
@@ -140,13 +142,15 @@ JSUrlify.prototype.toString = function(){
   if( names.length > 0 ){ 
     var params = [];
     for (var i in names){
-      key   = names[i];
-      if ( this[names[i]] === null || this[names[i]] === undefined){
-        value = "";
-      } else {
-        value = encodeURIComponent( this[names[i]] ).replace(/%20/g,'+');
+      if( names.hasOwnProperty(i) ){
+        key = names[i];
+        if ( this[key] === null || this[key] === undefined){
+          value = "";
+        } else {
+          value = encodeURIComponent( this[key] ).replace(/%20/g,'+');
+        }
+        params.push(key + "=" + value);
       }
-      params.push(key + "=" + value);
     }
     url.push("?" + params.join("&"));
   }
@@ -170,7 +174,9 @@ JSUrlify.prototype.clear_path = function(){
 JSUrlify.prototype.clear_query = function(){
   var names = this.attribute_names();
   for (var i in names){
-    delete this[names[i]];
+    if( names.hasOwnProperty(i) ){
+      delete this[names[i]];
+    }
   }
 };
 
