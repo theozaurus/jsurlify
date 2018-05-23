@@ -129,7 +129,7 @@ Currently Internet Explorer 6 and 7 are not supported. IE9 should work fine, but
 Testing
 =======
 
-Testing is done using [Jasmine](http://pivotal.github.com/jasmine/), with Ruby used to help automate things.
+Testing is done using [Jasmine](https://jasmine.github.io/), with Ruby used to help automate things.
 
 Setup
 -----
